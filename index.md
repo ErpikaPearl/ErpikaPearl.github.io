@@ -4,4 +4,4 @@
 - [Bouncing Ball](01-ball)
 
 ## Projects
-- [Interactive Scene](01-Burgeria)
+- [Interactive Scene](01-burgeria)
