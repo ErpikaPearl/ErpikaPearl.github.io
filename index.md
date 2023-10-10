@@ -6,3 +6,4 @@
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
+- [Arrays and Object Notation](02-arrays_project)
