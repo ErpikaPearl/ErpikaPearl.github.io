@@ -6,7 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 //  Declaring objects
-const partyLeader = {
+const partyMemberZero = {
   hP: 50,
   mP: 25,
   attack: 50,
@@ -45,7 +45,6 @@ const partyMemberThree = {
 //  Declaring variables
 let borderSize = 10; // Universal border for everything
 let midLine = 0;
-
 let screenType = "battle";
 
 let backgroundX = 0;
@@ -53,21 +52,21 @@ let backgroundY = 0;
 let backgroundWidth = 0;
 let backgroundHeight = 0;
 
-let boxWidth = 0;
-let boxHeight = 0;
-let boxYLocation = 0;
+// let boxWidth = 0;
+// let boxHeight = 0;
+// let boxYLocation = 0;
 let boxColours = ["red", "red",  "red", "red"];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   //  Adding to variables
+  midLine = width/2;
+
   backgroundX = width/2;
   backgroundY = height/1.3;
   backgroundWidth = width/1.4;
   backgroundHeight = height/3.5;
-
-  midLine = width/2;
 }
 
 function draw() {
@@ -76,7 +75,7 @@ function draw() {
   drawBattleScreen();
   drawChoiceScreen()
 
-  console.log(screenType)
+  console.log(screenType);
 }
 
 function whileMousePressed(x, y, w, h){
@@ -90,7 +89,7 @@ function whileMousePressed(x, y, w, h){
 
 
 function drawBattleScreen(){
-  if (screenType = "battle"){
+  if (screenType === "battle"){
 
     //  Determining size of boxes & where to place
     let boxWidth = backgroundWidth/2.5;
@@ -111,16 +110,19 @@ function drawBattleScreen(){
     // if boxes clicked, turn black
     if  (whileMousePressed(midLine - boxWidth - borderSize/2, boxYLocation - boxHeight - borderSize, boxWidth, boxHeight)){
       boxColours[0] = "black";
-      // screenType = "choice"
+      screenType = "attack";
     }
     else if  (whileMousePressed(midLine - boxWidth - borderSize/2, boxYLocation, boxWidth, boxHeight)){
       boxColours[1] = "black";
+      screenType = "run";
     }
     else if  (whileMousePressed(midLine + borderSize/2, boxYLocation - boxHeight- borderSize, boxWidth, boxHeight)){
       boxColours[2] = "black";
+      screenType = "ability";
     }
     else if  (whileMousePressed(midLine + borderSize/2, boxYLocation, boxWidth, boxHeight)){
       boxColours[3] = "black";
+      screenType = "heal";
     }
     else{
       boxColours[0] = "red";
@@ -139,9 +141,13 @@ function drawBackground(){
 }
 
 function drawChoiceScreen(){
-  if (screenType = "choice"){
+  if (screenType === "ability"){
+    let boxWidth = backgroundWidth;
+    let boxHeight = backgroundHeight;
+    let boxYLocation = backgroundY;
+
     fill("green");
-    rect(midLine - boxWidth - borderSize, boxYLocation - boxHeight - borderSize*2, boxWidth*2 + borderSize*2, boxHeight*2 + borderSize*3);
+    rect(midLine - background, boxYLocation - boxHeight - borderSize*3, boxWidth, boxHeight); //  THINGG
   }
 
 }
