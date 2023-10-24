@@ -5,6 +5,7 @@
 - [Ball Object Notation](02-ball_object)
 - [Sounds and Images](03-sound)
 - [Terrain generation](04-terrain)
+- [Draw a Grid](05-grid)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
