@@ -6,6 +6,7 @@
 - [Sounds and Images](03-sound)
 - [Terrain generation](04-terrain)
 - [Draw a Grid](05-grid)
+- [Grid Neighbors](06-neighbors)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
