@@ -7,7 +7,8 @@
 
 let grid;
 let cellSize;
-const GRID_SIZE = 15;
+const GRID_SIZE = 50;
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -23,12 +24,15 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
+}
+
+function mousePressed(){
   ifClicked(mouseX, mouseY);
 }
 
 function ifClicked(xLoc, yLoc){
-  let Xlocation = floor(xLoc);
-  let Ylocation = floor(yLoc);
+  let Xlocation = floor(xLoc/cellSize);
+  let Ylocation = floor(yLoc/cellSize);
   if (grid[Ylocation][Xlocation] === 0){
     grid[Ylocation][Xlocation] = 1;
   }
