@@ -11,3 +11,4 @@
 ## Projects
 - [Interactive Scene](01-burgeria/)
 - [Arrays and Object Notation](02-arrays_project)
+- [Simple Arrays Project](03-simple-arrays)
