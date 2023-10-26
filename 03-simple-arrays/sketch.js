@@ -1,10 +1,21 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+/*=============================================================================
+*  25/10/2023
+*
+*  Project: Dancing square!
+*  Creator: Erika Johnson
+*  Teacher: Mr. Schellenburg
+*  
+*  Purpose: This project is only visual. The background is a grid of grey cubes 
+*  formed from objects in an array. An orangle rectangle moves around the screen
+*  randomly. If the rectangle touches the side of the screen, it moves to the 
+*  oppisite side of the screen.
+*
+*  Extra for Experts: The rectangle is moved by vectors, which were calculated
+*  without using the vector object.
+*=============================================================================*/
 
+
+//  Declaring global variables
 const startSquare = {
   x: 0,
   y: 0,
@@ -24,26 +35,22 @@ const movingRect = {
 const vectorValues = {
   x: 0,
   y: 0,
-}
+};
 
-colours = ["red", "orange", "yellow", "green", "aqua", "blue", "violet"]
-
-coloursGrey = [200, 180, 170, 140, 120, 80, 60, 80, 120, 140, 170, 180, 200]
-
+let coloursGrey = [200, 180, 170, 140, 120, 80, 60, 80, 120, 140, 170, 180, 200];
 let allBoxes = [];
-
 let borderSize = 20;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  //  Editing variables
   startSquare.x = borderSize/2;
   startSquare.y = borderSize/2;
-  movingRect.x = width/2
-  movingRect.y = height/2
-  angleMode(DEGREES)
-  
-  
+  movingRect.x = width/2;
+  movingRect.y = height/2;
+  angleMode(DEGREES);
+
   makeBoxes();
 }
 
@@ -51,10 +58,16 @@ function draw() {
   background(220);
   
   drawBoxes();
-  drawRect()
+  drawRect();
+
+  //  For the cooler, much more laggy code uncomment the below lines 
+  // makeBoxes();
+  // coloursGrey.unshift(coloursGrey.pop());
 }
 
 function makeBoxes(){
+  //  Makes an array for a grid of boxes
+
   let colourSpace = 0;
   let backwards = 0
   for (let x = 0; x <= width; x += startSquare.w + borderSize){
@@ -64,16 +77,18 @@ function makeBoxes(){
       newBox.y = y;
       newBox.colour = coloursGrey[colourSpace];
       allBoxes.push(newBox);
-      newbox = {};
+      newBox = {};
       colourSpace += 1;
       if (colourSpace === coloursGrey.length){
-         colourSpace = 0;
-}
+       colourSpace = 0;
       }
-    } 
+    }
+  } 
 }
 
 function drawBoxes(){
+  //  Draws a background of boxes from the array
+
   for (let x in allBoxes){
     fill(allBoxes[x].colour);
     rect(allBoxes[x].x + borderSize/2, allBoxes[x].y + borderSize/2, allBoxes[x].w, allBoxes[x].h);
@@ -81,57 +96,45 @@ function drawBoxes(){
 }
 
 function drawRect(){
+  //  Draws a rectangle that moves randomly
+
+  //  Declare local variables
   let vectorDirection = random(-360, 360);
-  let vectorDistance = random(2, 5);
-  let vectorSpeed = random(1, 5);
+  let vectorDistance = random(2, 80);
   vectorValues.x = 0;
   vectorValues.y = 0;
   calculateVector(vectorDirection, vectorDistance);
   
+  //  Draw and move rectangle
   fill(movingRect.colour);
   rect(movingRect.x, movingRect.y, movingRect.w, movingRect.h);
   
-  moveVector(vectorSpeed);
+  moveVector();
 }
 
 function calculateVector(direction, distance){
+  //  Calculates the x and y values of the vector from the direction and distance given
+
   vectorValues.y = distance * sin(direction);
   vectorValues.x = distance * cos(direction);
-  console.log(vectorValues.x + "\t\t" + vectorValues.y)
-  // console.log(vectorValues.x)
 }
 
-function moveVector(speed){
+function moveVector(){
+  //  Moves the rectangle depending on the vector, moves rectangle through the wall if touched
+
   movingRect.x += vectorValues.x;
   movingRect.y += vectorValues.y;
   
-  
-  
-  // let startingPosX = 0;
-  // let startingPosY = 0;
-  // let rateOfChange = 2;
-  
-
-
-
-  // if (startingPosX <= vectorValues.x && movingRect.x > 0){
-  //   if (vectorValues.x < 0  ){
-  //     movingRect.x -= speed;
-  //   }
-  //   if (vectorValues.x >= 0 && movingRect.x + movingRect.w < width){
-  //     movingRect.x += speed;
-  //   }
-  //   startingPosX += rateOfChange;
-  // }
-  
-  // if (startingPosY <= vectorValues.y && movingRect.x > 0){
-  //   if (vectorValues.y < 0){
-  //     movingRect.y -= speed;
-  //   }
-  //   if (vectorValues.y >= 0 && movingRect.y + movingRect.w < height){
-  //     movingRect.y += speed;
-  //   }
-  //   startingPosY += rateOfChange;
-  // }  
+  if (movingRect.x < 0){ //  left wall
+    movingRect.x = width -  movingRect.w;
+  }
+  else if  (movingRect.x + movingRect.w >= width){ //  right wall
+    movingRect.x = 0;
+  }
+  if (movingRect.y <= 0){ //  top wall
+    movingRect.y = height - movingRect.h;
+  }
+  else if  (movingRect.y >= height){ //  bottom wall
+    movingRect.y = 0;
+  }
 }
-
