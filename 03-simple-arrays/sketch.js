@@ -60,7 +60,7 @@ function draw() {
   drawBoxes();
   drawRect();
 
-  //  For the cooler, much more laggy code uncomment the below lines 
+  //  For the cooler, much more laggy code uncomment the two lines below
   // makeBoxes();
   // coloursGrey.unshift(coloursGrey.pop());
 }
