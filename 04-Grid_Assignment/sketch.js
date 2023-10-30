@@ -83,13 +83,13 @@ function floodFill(x, y, grid){
     grid[y][x] === 1;
     for (let cols = y - 1; cols > y + 1; y++){
       for (let rows = x - 1; rows > x + 1; x++){
-        floodFill(rows, cols, grid);
+        //  edge case check
+        if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE){
+          floodFill(rows, cols, grid);
+        }
       }
     }
   }
-  //fill orgin as black
-  //if sides are not black, fill as black
-  // as long as the pixels are not black, call function again
 }
 
 function toggleCell(x, y, grid){
