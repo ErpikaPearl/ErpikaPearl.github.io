@@ -83,9 +83,7 @@ function floodFill(x, y, grid){
     grid[y][x] === 1;
     for (let cols = y - 1; cols > y + 1; y++){
       for (let rows = x - 1; rows > x + 1; x++){
-        if (grid[cols][rows] !== 1){
-          //pANIN
-        }
+        floodFill(rows, cols, grid);
       }
     }
   }
