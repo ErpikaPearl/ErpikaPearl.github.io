@@ -30,8 +30,12 @@ function draw() {
 }
 
 function mousePressed(){
-  // ifClicked(mouseX, mouseY, gridLayerTwo);
-  floodFill(mouseX, mouseY, gridLayerTwo);
+  if (mouseButton === LEFT){
+    ifClicked(mouseX, mouseY, gridLayerTwo);
+  }
+  else if (mouseButton === CENTER){
+    floodFill(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo);
+  }
 }
 
 function ifClicked(xLoc, yLoc, grid){
@@ -57,6 +61,23 @@ function keyTyped(){
   }
 }
 
+function floodFill(x, y, grid){
+  if (grid[y][x] !== 1){
+    grid[y][x] === 1;
+    // for (let cols = y - 1; cols < y + 1; y++){
+    //   for (let rows = x - 1; rows < x + 1; x++){
+    //     //  edge case check
+    //     if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE){
+    //       floodFill(rows, cols, grid);
+    //     }
+    //     else{
+    //       break;
+    //     }
+    //   }
+    // }
+  }
+}
+
 function generateEmptyGrid(cols, rows){
   let randomArray = [];
   for (let y = 0; y < cols; y++){
@@ -78,19 +99,7 @@ function drawShape(grid, orginX, orginY){
   //  CONNECT IT??????
 }
 
-function floodFill(x, y, grid){
-  if (grid[y][x] !== 1){
-    grid[y][x] === 1;
-    for (let cols = y - 1; cols > y + 1; y++){
-      for (let rows = x - 1; rows > x + 1; x++){
-        //  edge case check
-        if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE){
-          floodFill(rows, cols, grid);
-        }
-      }
-    }
-  }
-}
+
 
 function toggleCell(x, y, grid){
   //  check that we are within the grid then toggle
