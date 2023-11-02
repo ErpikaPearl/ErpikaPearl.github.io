@@ -47,7 +47,7 @@ function setup() {
 
   colourChoiceBox.x = border;
   colourChoiceBox.y = GRID_SIZE * cellSize + border ;
-  colourChoiceBox.w = (GRID_SIZE - 2) / 4;
+  colourChoiceBox.w = (GRID_SIZE - 2) / 1.5;
   colourChoiceBox.h = 60;
 
 }
@@ -85,10 +85,11 @@ function floodFill(x, y, grid){
       for (let rows = x - 1; rows < x + 1; x++){
         //  edge case check
         if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE && grid[cols][rows] !== 1){
+          console.log(rows, cols);
           floodFill(rows, cols, grid);
         }
         else{
-          break;
+          return 0;
         }
       }
     }
