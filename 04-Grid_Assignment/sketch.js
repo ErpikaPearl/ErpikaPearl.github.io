@@ -21,12 +21,15 @@ let drawState = 1;
 let border;
 const GRID_SIZE = 50;
 
-let colourChoiceBox = {
+let colourChoiceBox1 = {
   x: 0,
   y: 0,
   w: 0,
   h: 0,
+  colour: "red",
 };
+
+let ChoiceBoxes = [];
 
 
 
@@ -45,11 +48,41 @@ function setup() {
 
   border = cellSize;
 
-  colourChoiceBox.x = border;
-  colourChoiceBox.y = GRID_SIZE * cellSize + border ;
-  colourChoiceBox.w = (GRID_SIZE - 2) / 1.5;
-  colourChoiceBox.h = 60;
+  colourChoiceBox1.w = GRID_SIZE *cellSize / 8 - border;
+  colourChoiceBox1.h = GRID_SIZE *cellSize / 8 - border;
 
+  if (screenMode === "portrait"){
+    colourChoiceBox1.x = border;
+    colourChoiceBox1.y = GRID_SIZE * cellSize + border ;
+    ChoiceBoxes.push(colourChoiceBox1);
+
+    //  MAKE NEATER
+    let colourChoiceBox2 = structuredClone(colourChoiceBox1);
+    colourChoiceBox2.x += colourChoiceBox1.w + border;
+    colourChoiceBox2.colour = "blue";
+    ChoiceBoxes.push(colourChoiceBox2);
+
+    let colourChoiceBox3 = structuredClone(colourChoiceBox2);
+    colourChoiceBox3.x += colourChoiceBox2.w + border;
+    colourChoiceBox3.colour = "green";
+    ChoiceBoxes.push(colourChoiceBox3);
+
+
+    let colourChoiceBox4 = structuredClone(colourChoiceBox3);
+    colourChoiceBox4.x += colourChoiceBox3.w + border;
+    colourChoiceBox4.colour = "orange";
+    ChoiceBoxes.push(colourChoiceBox4);
+
+    let colourChoiceBox5 = structuredClone(colourChoiceBox4);
+    colourChoiceBox5.x += colourChoiceBox4.w + border;
+    colourChoiceBox5.colour = "purple";
+    ChoiceBoxes.push(colourChoiceBox5);
+  }
+
+  else if (screenMode === "landscape"){
+    colourChoiceBox1.x = border;
+    colourChoiceBox1.y = GRID_SIZE * cellSize + border ;
+  }
 }
 
 function draw() {
@@ -87,6 +120,7 @@ function floodFill(x, y, grid){
         if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE && grid[cols][rows] !== 1){
           console.log(rows, cols);
           floodFill(rows, cols, grid);
+          console.log("after", rows, cols);
         }
         else{
           return 0;
@@ -108,7 +142,11 @@ function ifClicked(xLoc, yLoc, grid){
 }
 
 function chooseDrawState(){
-  rect(colourChoiceBox.x, colourChoiceBox.y, colourChoiceBox.w, colourChoiceBox.h);
+
+  for (let i of ChoiceBoxes){
+    fill(i.colour);
+    rect(i.x, i.y, i.w, i.h);
+  }
 }
 
 function generateEmptyGrid(cols, rows){
