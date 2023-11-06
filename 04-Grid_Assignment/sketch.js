@@ -97,7 +97,7 @@ function mousePressed(){
     ifClicked(mouseX, mouseY, gridLayerTwo);
   }
   else if (mouseButton === CENTER){
-    floodFill(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo);
+    floodFillActivation(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo);
   }
 }
 
@@ -111,22 +111,25 @@ function keyTyped(){
   // }
 }
 
-function floodFill(x, y, grid){
+function floodFillActivation(x, y, grid){
   if (grid[y][x] !== 1){
+    floodFill(x, y, grid);
+  }
+}
+
+function floodFill(x, y, grid){
+  let rows = grid.length;
+  let cols = grid[0].length;
+  
+  if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === 1){
+    return;
+  }
+  else{
     grid[y][x] = 1;
-    for (let cols = y - 1; cols < y + 1; y++){
-      for (let rows = x - 1; rows < x + 1; x++){
-        //  edge case check
-        if (rows >= 0 && rows <= GRID_SIZE && cols >= 0 && cols <= GRID_SIZE && grid[cols][rows] !== 1){
-          console.log(rows, cols);
-          floodFill(rows, cols, grid);
-          console.log("after", rows, cols);
-        }
-        else{
-          return 0;
-        }
-      }
-    }
+    floodFill(x+1, y, grid);
+    floodFill(x, y+1, grid);
+    floodFill(x-1, y, grid);
+    floodFill(x, y-1, grid);
   }
 }
 
