@@ -6,7 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 
-// number ker
+// number key
 //  0 = open space
 //  1 = obstacle (tree)
 //  4 = obstical (water)
