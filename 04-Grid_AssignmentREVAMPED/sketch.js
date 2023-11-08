@@ -23,6 +23,7 @@ let gridLayerOne;
 let gridLayerTwo;
 let cellSize;
 let screenMode;
+let horizontal = true;
 
 
 let border;
@@ -37,12 +38,20 @@ let colourChoiceBox1 = {
   state: 1
 };
 
+let DirectionDrawBox = {
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0
+};
+
 let drawState = {
   state: 1,
   colour: "green",
 };
 
 let ChoiceBoxes = [];
+let finalBox = {};
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -92,11 +101,19 @@ function setup() {
     colourChoiceBox5.colour = "brown";
     colourChoiceBox5.state = 7;
     ChoiceBoxes.push(colourChoiceBox5);
-  }
 
-  else if (screenMode === "landscape"){
-    colourChoiceBox1.x = border;
-    colourChoiceBox1.y = GRID_SIZE * cellSize + border ;
+    let colourChoiceBox6 = structuredClone(colourChoiceBox5);
+    colourChoiceBox6.x += colourChoiceBox5.w + border;
+    colourChoiceBox6.colour = "white";
+    colourChoiceBox6.state = 0;
+    ChoiceBoxes.push(colourChoiceBox6);
+
+    DirectionDrawBox.x = colourChoiceBox6.x + colourChoiceBox6.w + border;
+    DirectionDrawBox.y = colourChoiceBox6.y + colourChoiceBox6.h/3;
+    DirectionDrawBox.w = colourChoiceBox6.w;
+    DirectionDrawBox.h = colourChoiceBox6.h/3;
+
+    finalBox = structuredClone(colourChoiceBox6);
   }
 }
 
@@ -105,14 +122,18 @@ function draw() {
   // displayGrid(gridLayerOne);
   displayGrid(gridLayerTwo);
   chooseDrawState();
+  DirectionChoice();
 }
 
 function mousePressed(){
   if (mouseButton === LEFT){
     ifClicked(mouseX, mouseY, gridLayerTwo);
   }
+  else if (mouseButton === RIGHT){
+    drawLineActivation(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo, drawState.state, horizontal);
+  }
   else if (mouseButton === CENTER){
-    floodFillActivation(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo);
+    floodFillActivation(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo, drawState.state);
   }
 }
 
@@ -126,26 +147,73 @@ function keyTyped(){
   // }
 }
 
-function floodFillActivation(x, y, grid,){
-  if (grid[y][x] !== 1){
-    floodFill(x, y, grid);
+function drawLineActivation(x, y, grid, state, verticalOrHorizontal){
+  if (grid[y][x] !== state){
+    drawLine(x, y, grid, state, verticalOrHorizontal);
   }
 }
 
-function floodFill(x, y, grid){
+function drawLine(x, y, grid, state, verticalOrHorizontal){
   let rows = grid.length;
   let cols = grid[0].length;
   
-  if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === 1){
+  if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
+    return;
+  }
+  else if (verticalOrHorizontal === true){
+    grid[y][x] = state;
+    drawLine(x+1, y, grid, state, verticalOrHorizontal);
+    drawLine(x-1, y, grid, state, verticalOrHorizontal);
+  }
+  else {
+    grid[y][x] = state;
+    drawLine(x, y+1, grid, state, verticalOrHorizontal);
+    drawLine(x, y-1, grid, state, verticalOrHorizontal);
+  }
+}
+
+function floodFillActivation(x, y, grid, state){
+  if (grid[y][x] !== state){
+    floodFill(x, y, grid, state);
+  }
+}
+
+function floodFill(x, y, grid, state){
+  let rows = grid.length;
+  let cols = grid[0].length;
+  
+  if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
     return;
   }
   else{
-    grid[y][x] = 1;
-    floodFill(x+1, y, grid);
-    floodFill(x, y+1, grid);
-    floodFill(x-1, y, grid);
-    floodFill(x, y-1, grid);
+    grid[y][x] = state;
+    floodFill(x+1, y, grid, state);
+    floodFill(x, y+1, grid, state);
+    floodFill(x-1, y, grid, state);
+    floodFill(x, y-1, grid, state);
   }
+}
+
+function DirectionChoice(){
+  fill("black");
+  if (whileMousePressed(DirectionDrawBox.x, DirectionDrawBox.y, DirectionDrawBox.w, DirectionDrawBox.h)){
+    horizontal = !horizontal;
+    if (horizontal){
+      DirectionDrawBox.x = finalBox.x + finalBox.w + border;
+      DirectionDrawBox.y = finalBox.y + finalBox.h/3;
+      DirectionDrawBox.w = finalBox.w;
+      DirectionDrawBox.h = finalBox.h/3;
+    }
+    else{
+      DirectionDrawBox.x = finalBox.x + finalBox.w + border + finalBox.h/3;
+      DirectionDrawBox.y = finalBox.y;
+      DirectionDrawBox.w = finalBox.h/3;
+      DirectionDrawBox.h = finalBox.w;
+    }
+  }
+
+  rect(DirectionDrawBox.x, DirectionDrawBox.y, DirectionDrawBox.w, DirectionDrawBox.h);
+
 }
 
 //  THE SAME AS TOGGLECELL

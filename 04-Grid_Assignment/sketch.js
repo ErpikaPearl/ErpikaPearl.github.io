@@ -105,10 +105,6 @@ function keyTyped(){
   if (key === "e"){
     gridLayerTwo = generateEmptyGrid(GRID_SIZE, GRID_SIZE);
   }
-
-  // else if (key === "d"){
-  //   drawShape();
-  // }
 }
 
 function floodFillActivation(x, y, grid){
