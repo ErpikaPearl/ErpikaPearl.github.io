@@ -13,3 +13,4 @@
 - [Arrays and Object Notation](02-arrays_project)
 - [Simple Arrays Project](03-simple-arrays)
 - [Grid Assignment](04-Grid_Assignment)
+- [Grid Assignment Better](04-Grid_AssignmentREVAMPED)
