@@ -27,7 +27,7 @@ let horizontal = true;
 
 
 let border;
-const GRID_SIZE = 50;
+const GRID_SIZE = 60;
 
 let colourChoiceBox1 = {
   x: 0,
@@ -55,14 +55,17 @@ let finalBox = {};
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  if (height < width){
-    cellSize = height/GRID_SIZE;
-    screenMode = "landscape";
-  }
-  else {
-    cellSize = width/GRID_SIZE;
-    screenMode = "portrait";
-  }
+  // if (height < width){
+  //   cellSize = height/GRID_SIZE;
+  //   screenMode = "landscape";
+  // }
+  // else {
+  //   cellSize = width/GRID_SIZE;
+  //   screenMode = "portrait";
+  // }
+
+  cellSize = 10;
+
   gridLayerOne = generateEmptyGrid(GRID_SIZE, GRID_SIZE);
   gridLayerTwo = generateEmptyGrid(GRID_SIZE, GRID_SIZE);
 
@@ -71,50 +74,49 @@ function setup() {
   colourChoiceBox1.w = GRID_SIZE *cellSize / 8 - border;
   colourChoiceBox1.h = GRID_SIZE *cellSize / 8 - border;
 
-  if (screenMode === "portrait"){
-    colourChoiceBox1.x = border;
-    colourChoiceBox1.y = GRID_SIZE * cellSize + border ;
-    ChoiceBoxes.push(colourChoiceBox1);
+  colourChoiceBox1.x = border;
+  colourChoiceBox1.y = GRID_SIZE * cellSize + border ;
+  ChoiceBoxes.push(colourChoiceBox1);
 
-    //  MAKE NEATER
-    let colourChoiceBox2 = structuredClone(colourChoiceBox1);
-    colourChoiceBox2.x += colourChoiceBox1.w + border;
-    colourChoiceBox2.colour = "blue";
-    colourChoiceBox2.state = 4;
-    ChoiceBoxes.push(colourChoiceBox2);
+  //  MAKE NEATER
+  let colourChoiceBox2 = structuredClone(colourChoiceBox1);
+  colourChoiceBox2.x += colourChoiceBox1.w + border;
+  colourChoiceBox2.colour = "blue";
+  colourChoiceBox2.state = 4;
+  ChoiceBoxes.push(colourChoiceBox2);
 
-    let colourChoiceBox3 = structuredClone(colourChoiceBox2);
-    colourChoiceBox3.x += colourChoiceBox2.w + border;
-    colourChoiceBox3.colour = "black";
-    colourChoiceBox3.state = 5;
-    ChoiceBoxes.push(colourChoiceBox3);
+  let colourChoiceBox3 = structuredClone(colourChoiceBox2);
+  colourChoiceBox3.x += colourChoiceBox2.w + border;
+  colourChoiceBox3.colour = "black";
+  colourChoiceBox3.state = 5;
+  ChoiceBoxes.push(colourChoiceBox3);
 
 
-    let colourChoiceBox4 = structuredClone(colourChoiceBox3);
-    colourChoiceBox4.x += colourChoiceBox3.w + border;
-    colourChoiceBox4.colour = "aqua";
-    colourChoiceBox4.state = 6;
-    ChoiceBoxes.push(colourChoiceBox4);
+  let colourChoiceBox4 = structuredClone(colourChoiceBox3);
+  colourChoiceBox4.x += colourChoiceBox3.w + border;
+  colourChoiceBox4.colour = "aqua";
+  colourChoiceBox4.state = 6;
+  ChoiceBoxes.push(colourChoiceBox4);
 
-    let colourChoiceBox5 = structuredClone(colourChoiceBox4);
-    colourChoiceBox5.x += colourChoiceBox4.w + border;
-    colourChoiceBox5.colour = "brown";
-    colourChoiceBox5.state = 7;
-    ChoiceBoxes.push(colourChoiceBox5);
+  let colourChoiceBox5 = structuredClone(colourChoiceBox4);
+  colourChoiceBox5.x += colourChoiceBox4.w + border;
+  colourChoiceBox5.colour = "brown";
+  colourChoiceBox5.state = 7;
+  ChoiceBoxes.push(colourChoiceBox5);
 
-    let colourChoiceBox6 = structuredClone(colourChoiceBox5);
-    colourChoiceBox6.x += colourChoiceBox5.w + border;
-    colourChoiceBox6.colour = "white";
-    colourChoiceBox6.state = 0;
-    ChoiceBoxes.push(colourChoiceBox6);
+  let colourChoiceBox6 = structuredClone(colourChoiceBox5);
+  colourChoiceBox6.x += colourChoiceBox5.w + border;
+  colourChoiceBox6.colour = "white";
+  colourChoiceBox6.state = 0;
+  ChoiceBoxes.push(colourChoiceBox6);
 
-    DirectionDrawBox.x = colourChoiceBox6.x + colourChoiceBox6.w + border;
-    DirectionDrawBox.y = colourChoiceBox6.y + colourChoiceBox6.h/3;
-    DirectionDrawBox.w = colourChoiceBox6.w;
-    DirectionDrawBox.h = colourChoiceBox6.h/3;
+  DirectionDrawBox.x = colourChoiceBox6.x + colourChoiceBox6.w + border;
+  DirectionDrawBox.y = colourChoiceBox6.y + colourChoiceBox6.h/3;
+  DirectionDrawBox.w = colourChoiceBox6.w;
+  DirectionDrawBox.h = colourChoiceBox6.h/3;
 
-    finalBox = structuredClone(colourChoiceBox6);
-  }
+  finalBox = structuredClone(colourChoiceBox6);
+
 }
 
 function draw() {
