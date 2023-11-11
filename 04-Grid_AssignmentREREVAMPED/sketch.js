@@ -1,36 +1,49 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+/*==========================================================================
+*  11/11/2023
+*
+*  Project: Level Creator
+*  Creator: Erika Johnson
+*  Teacher: Mr. Schellenburg
+*  
+*  Purpose: This project is to make level creation for my final project 
+*  easier. The purpose of this project is to be able to fill a grid with 
+*  various numbers. In my final project, the numbers will represent various 
+*  states a cell could have (Eg: ice, water, open space). In this project, 
+*  the states are differentiated by colour (listed below). Left clicking
+*  inside the grid will draw one square, right clicking will draw either
+*  a horizontal or vertical line, and middle clicking will fill the whole 
+*  grid. By clicking the coloured boxes, you can change the colour drawn in.
+*  By clicking the rectangle, you can change if right clicking draws a 
+*  vertical or horizontal line. The left and right arrow keys will move the
+*  canvas left or right (More useful if the width of the screen is less than
+*  the height).
+*
+*  Extra for Experts: Recursive functions are use in the flood fill and
+*  draw line functions.  
+*=========================================================================*/
 
-
-//  saveJSON
-//  Save Local storage
-//  https://cs30.wmcicompsci.ca/reference/strings.html
-
-// number key
+// Number Key:
 //  0, white = open space
-//  1, green = obstacle (tree)
-//  4, blue = obstacle (water)
-//  5, black = wall (concrete) 
-//  6, aqua = wall (ice) 
-//  7, brown = wall (grass/dirt) 
+//  1, green = non solid object 1
+//  4, blue = non solid object (water)
+//  5, black = solid object (concrete) 
+//  6, aqua = solid object (ice) 
+//  7, brown = solid object (dirt) 
+//  numbers 2 and 3 are gonna be used later for the player and enemies
 
 
-let gridLayerOne;
-let gridLayerTwo;
+//  Declaring variables
+let gridLayerTwo; //  called layer two because i might be planning to add a grid underneath this for the final project
 let cellSize;
 let screenMode;
 let horizontal = true;
 let xOffset = 0;
-
-
 let border;
-const GRID_WIDTH = 120;
+//  Code is made for when witdh is greater than length
+const GRID_WIDTH = 120; 
 const GRID_HEIGHT = 60;
 
+//  Declaring objects
 let colourChoiceBox1 = {
   x: 0,
   y: 0,
@@ -52,35 +65,27 @@ let drawState = {
   colour: "green",
 };
 
+//  Declaring containers
 let ChoiceBoxes = [];
 let finalBox = {};
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  // if (height < width){
-  //   cellSize = height/GRID_SIZE;
-  //   screenMode = "landscape";
-  // }
-  // else {
-  //   cellSize = width/GRID_SIZE;
-  //   screenMode = "portrait";
-  // }
 
+  //  Declaring variables
   cellSize = 10;
-
-  gridLayerOne = generateEmptyGrid(GRID_WIDTH, GRID_HEIGHT);
-  gridLayerTwo = generateEmptyGrid(GRID_WIDTH, GRID_HEIGHT);
-
   border = cellSize;
 
+  //  Generate the empty grid
+  gridLayerTwo = generateEmptyGrid(GRID_WIDTH, GRID_HEIGHT);
+
+  //  Create the boxes underneath grid, and then add them to the array
   colourChoiceBox1.w = GRID_WIDTH *cellSize / 16 - border;
   colourChoiceBox1.h = GRID_HEIGHT *cellSize / 8 - border;
-
   colourChoiceBox1.x = border;
   colourChoiceBox1.y = GRID_HEIGHT * cellSize + border ;
   ChoiceBoxes.push(colourChoiceBox1);
 
-  //  MAKE NEATER
   let colourChoiceBox2 = structuredClone(colourChoiceBox1);
   colourChoiceBox2.x += colourChoiceBox1.w + border;
   colourChoiceBox2.colour = "blue";
@@ -112,46 +117,54 @@ function setup() {
   colourChoiceBox6.state = 0;
   ChoiceBoxes.push(colourChoiceBox6);
 
+  //Create the direction box, defult to horizontal  
   DirectionDrawBox.x = colourChoiceBox6.x + colourChoiceBox6.w + border;
   DirectionDrawBox.y = colourChoiceBox6.y + colourChoiceBox6.h/3;
   DirectionDrawBox.w = colourChoiceBox6.w;
   DirectionDrawBox.h = colourChoiceBox6.h/3;
 
+  //  A referance of the final box drawn, used to switch DirectionDrawBox from vertical to horizontal
   finalBox = structuredClone(colourChoiceBox6);
 
-  document.addEventListener("contextmenu", event => event.preventDefault());
+  document.addEventListener("contextmenu", event => event.preventDefault());  //  Disables right click menu
 }
 
 function draw() {
-  background(220);
-  // displayGrid(gridLayerOne);
+  background(150);
   displayGrid(gridLayerTwo);
   chooseDrawState();
   DirectionChoice();
 
+  //  Moves the grid left or right
   if (keyIsDown(RIGHT_ARROW)){
     if (xOffset <= GRID_WIDTH * cellSize - xOffset){
       xOffset += 10;
-      console.log("RIGHT!!!!!!!");
     }
   }
   else if (keyIsDown(LEFT_ARROW)){
-    if (xOffset > 5){ //  Don't fall off the left side
+    if (xOffset > 5){ 
       xOffset -= 10;
     }
   }
 }
 
+
+//  Detecting imputs
+
 function mousePressed(){
-  if (mouseButton === LEFT){
+  if (mouseX > DirectionDrawBox.x && mouseX < DirectionDrawBox.x + DirectionDrawBox.w && mouseY > DirectionDrawBox.y && mouseY < DirectionDrawBox.y + DirectionDrawBox.h){
+    horizontal = !horizontal;
+  }
+  else if (mouseButton === LEFT){
     ifClicked(mouseX + xOffset, mouseY, gridLayerTwo);
   }
   else if (mouseButton === RIGHT){
-    drawLineActivation(floor(mouseX/cellSize) , floor(mouseY/cellSize), gridLayerTwo, drawState.state, horizontal);
+    drawLineActivation(floor((xOffset + mouseX)/cellSize), floor(mouseY/cellSize), gridLayerTwo, drawState.state, horizontal);
   }
   else if (mouseButton === CENTER){
-    floodFillActivation(floor(mouseX/cellSize), floor(mouseY/cellSize), gridLayerTwo, drawState.state);
+    floodFillActivation(floor((xOffset + mouseX)/cellSize), floor(mouseY/cellSize), gridLayerTwo, drawState.state);
   }
+  
 }
 
 function keyTyped(){
@@ -160,41 +173,56 @@ function keyTyped(){
   }
 }
 
+
+//  Declaring functions
+
 function drawLineActivation(x, y, grid, state, verticalOrHorizontal){
+  //  Activates the DrawLine fucntion, but only if you clicked an empty space
+
   if (grid[y][x] !== state){
     drawLine(x, y, grid, state, verticalOrHorizontal);
   }
 }
 
 function drawLine(x, y, grid, state, verticalOrHorizontal){
+  //  Draws a vertical or horizontal line
+
+  //  Get size of grid
   let rows = grid.length;
-  let cols = grid[y].length;
+  let cols = grid[y+1].length;
   
+  // Base case: outside of grid or the square is already coloured 
   if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
     return;
   }
-  else if (verticalOrHorizontal === true){
+  else if (verticalOrHorizontal === true){  //  Horizontal line
     grid[y][x] = state;
     drawLine(x+1, y, grid, state, verticalOrHorizontal);
     drawLine(x-1, y, grid, state, verticalOrHorizontal);
   }
   else {
     grid[y][x] = state;
-    drawLine(x, y+1, grid, state, verticalOrHorizontal);
+    drawLine(x, y+1, grid, state, verticalOrHorizontal);  //  Vertical line
     drawLine(x, y-1, grid, state, verticalOrHorizontal);
   }
 }
 
 function floodFillActivation(x, y, grid, state){
+  //  Activates floodFill function, but only if you clicked an empty space
+
   if (grid[y][x] !== state){
     floodFill(x, y, grid, state);
   }
 }
 
 function floodFill(x, y, grid, state){
+  //  Fills the grid in a colour 
+
+  //  Get size of grid
   let rows = grid.length;
   let cols = grid[y].length;
-  
+
+  // Base case: outside of grid or the square is already coloured 
   if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
     return;
   }
@@ -205,40 +233,40 @@ function floodFill(x, y, grid, state){
     floodFill(x-1, y, grid, state);
     floodFill(x, y-1, grid, state);
   }
+
 }
 
 function DirectionChoice(){
+  //  Draws a horizontal or vertical rectangle
+
   fill("black");
-  if (whileMousePressed(DirectionDrawBox.x, DirectionDrawBox.y, DirectionDrawBox.w, DirectionDrawBox.h)){
-    horizontal = !horizontal;
-    if (horizontal){
-      DirectionDrawBox.x = finalBox.x + finalBox.w + border;
-      DirectionDrawBox.y = finalBox.y + finalBox.h/3;
-      DirectionDrawBox.w = finalBox.w;
-      DirectionDrawBox.h = finalBox.h/3;
-    }
-    else{
-      DirectionDrawBox.x = finalBox.x + finalBox.w + border + finalBox.h/3;
-      DirectionDrawBox.y = finalBox.y;
-      DirectionDrawBox.w = finalBox.h/3;
-      DirectionDrawBox.h = finalBox.w;
-    }
+  if (horizontal){
+    DirectionDrawBox.x = finalBox.x + finalBox.w + border;
+    DirectionDrawBox.y = finalBox.y + finalBox.h/3;
+    DirectionDrawBox.w = finalBox.w;
+    DirectionDrawBox.h = finalBox.h/3;
+  }
+  else{
+    DirectionDrawBox.x = finalBox.x + finalBox.w + border + finalBox.h/3;
+    DirectionDrawBox.y = finalBox.y;
+    DirectionDrawBox.w = finalBox.h/3;
+    DirectionDrawBox.h = finalBox.w;
   }
 
   rect(DirectionDrawBox.x, DirectionDrawBox.y, DirectionDrawBox.w, DirectionDrawBox.h);
 
 }
 
-//  THE SAME AS TOGGLECELL
 function ifClicked(xLoc, yLoc, grid){
-  //  check that the click is within the grid then toggle to whatever the draw state is.  if the same colour as draw state is clicked, erase
+  //  check that the click is within the grid then toggle to whatever the draw state is. If the same colour as draw state is clicked, erase
 
+  //  Declaring variables
   let XLocation = floor(xLoc/cellSize);
   let YLocation = floor(yLoc/cellSize);
   let cols = grid.length;
   let rows = grid[YLocation].length;
 
-  if (XLocation > 0 && XLocation < cols && YLocation > 0 && YLocation < rows){
+  if (XLocation > 0 && XLocation < cols && YLocation > 0 && YLocation < rows){  //  Edge case
     if (grid[YLocation][XLocation] === drawState.state){
       grid[YLocation][XLocation] = 0;
     }
@@ -255,19 +283,20 @@ function whileMousePressed(x, y, w, h){
 }
 
 function chooseDrawState(){
-  //  Draws the coloured boxes, if the boxes are clicked, set the colour and state values to the colour of box clicked
+  //  Draws the coloured boxes, if the boxes are clicked, set the state value to the state of box clicked
+
   for (let i of ChoiceBoxes){
     fill(i.colour);
     rect(i.x, i.y, i.w, i.h);
     if (whileMousePressed(i.x, i.y, i.w, i.h)){
       drawState.state = i.state;
-      drawState.colour = i.colour;
     }
   }
 }
 
 function generateEmptyGrid(cols, rows){
-  //  Generates an empty grid
+  //  Generates an empty grid in size given
+
   let randomArray = [];
   for (let y = 0; y < cols; y++){
     randomArray.push([]);
@@ -278,22 +307,9 @@ function generateEmptyGrid(cols, rows){
   return randomArray;
 }
 
-
-function toggleCell(x, y, grid){
-  //  check that the click is within the grid then toggle to whatever the draw state is.  if the same colour as draw state is clicked, erase
-  if(x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT){
-    if (grid[y][x] === drawState.state){
-      grid[y][x] = 0;
-    }
-    else{
-      grid[y][x] = drawState.state;
-    }
-  }
-}
-
-
 function displayGrid(grid){
   //  fills the grid in whatever colour dependent on draw state
+  
   for (let y = 0; y < GRID_HEIGHT; y++){
     for (let x = 0; x < GRID_WIDTH; x++){
       if (grid[y][x] === 1){

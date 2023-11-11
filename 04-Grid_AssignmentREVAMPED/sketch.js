@@ -157,7 +157,7 @@ function drawLineActivation(x, y, grid, state, verticalOrHorizontal){
 
 function drawLine(x, y, grid, state, verticalOrHorizontal){
   let rows = grid.length;
-  let cols = grid[0].length;
+  let cols = grid[y-1].length;
   
   if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
     return;
@@ -182,9 +182,10 @@ function floodFillActivation(x, y, grid, state){
 
 function floodFill(x, y, grid, state){
   let rows = grid.length;
-  let cols = grid[0].length;
+  let cols = grid[y].length;
   
-  if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
+  if (x < 0 || x > rows || y < 0 || y > cols || grid[y][x] === state){
+    console.log("RETURN");
     return;
   }
   else{
@@ -225,7 +226,7 @@ function ifClicked(xLoc, yLoc, grid){
   let XLocation = floor(xLoc/cellSize);
   let YLocation = floor(yLoc/cellSize);
   let rows = grid.length;
-  let cols = grid[0].length;
+  let cols = grid[YLocation].length;
 
   if (XLocation > 0 && XLocation < cols && YLocation > 0 && YLocation < rows){
     if (grid[YLocation][XLocation] === drawState.state){
