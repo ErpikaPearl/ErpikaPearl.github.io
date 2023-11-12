@@ -1,5 +1,5 @@
 /*==========================================================================
-*  11/11/2023
+*  12/11/2023
 *
 *  Project: Level Creator
 *  Creator: Erika Johnson
@@ -15,11 +15,10 @@
 *  grid. By clicking the coloured boxes, you can change the colour drawn in.
 *  By clicking the rectangle, you can change if right clicking draws a 
 *  vertical or horizontal line. The left and right arrow keys will move the
-*  canvas left or right (More useful if the width of the screen is less than
-*  the height).
+*  canvas left or right (More useful if you can't see th whole canvas).
 *
 *  Extra for Experts: Recursive functions are use in the flood fill and
-*  draw line functions.  
+*  draw line functions.
 *=========================================================================*/
 
 // Number Key:
@@ -39,6 +38,8 @@ let screenMode;
 let horizontal = true;
 let xOffset = 0;
 let border;
+let paintBrush;
+
 //  Code is made for when witdh is greater than length
 const GRID_WIDTH = 120; 
 const GRID_HEIGHT = 60;
@@ -50,14 +51,14 @@ let colourChoiceBox1 = {
   w: 0,
   h: 0,
   colour: "green",
-  state: 1
+  state: 1,
 };
 
 let DirectionDrawBox = {
   x: 0,
   y: 0,
   w: 0,
-  h: 0
+  h: 0,
 };
 
 let drawState = {
@@ -68,6 +69,10 @@ let drawState = {
 //  Declaring containers
 let ChoiceBoxes = [];
 let finalBox = {};
+
+function preload(){
+  paintBrush = loadImage('PaintBursh-HQ.png');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -98,7 +103,6 @@ function setup() {
   colourChoiceBox3.state = 5;
   ChoiceBoxes.push(colourChoiceBox3);
 
-
   let colourChoiceBox4 = structuredClone(colourChoiceBox3);
   colourChoiceBox4.x += colourChoiceBox3.w + border;
   colourChoiceBox4.colour = "aqua";
@@ -127,9 +131,11 @@ function setup() {
   finalBox = structuredClone(colourChoiceBox6);
 
   document.addEventListener("contextmenu", event => event.preventDefault());  //  Disables right click menu
+  noCursor();
 }
 
 function draw() {
+  
   background(150);
   displayGrid(gridLayerTwo);
   chooseDrawState();
@@ -146,6 +152,9 @@ function draw() {
       xOffset -= 10;
     }
   }
+  
+  image(paintBrush, mouseX - 37, mouseY - 37, 40, 40);  //  Adds a paint brush instead of cursor
+  
 }
 
 
@@ -220,7 +229,7 @@ function floodFill(x, y, grid, state){
 
   //  Get size of grid
   let rows = grid.length;
-  let cols = grid[y].length;
+  let cols = grid[y+1].length;
 
   // Base case: outside of grid or the square is already coloured 
   if (x < 0 || x >= rows || y < 0 || y >= cols || grid[y][x] === state){
@@ -229,9 +238,9 @@ function floodFill(x, y, grid, state){
   else{
     grid[y][x] = state;
     floodFill(x+1, y, grid, state);
-    floodFill(x, y+1, grid, state);
     floodFill(x-1, y, grid, state);
     floodFill(x, y-1, grid, state);
+    floodFill(x, y+1, grid, state);
   }
 
 }
