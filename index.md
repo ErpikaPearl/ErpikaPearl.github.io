@@ -7,6 +7,9 @@
 - [Terrain generation](04-terrain)
 - [Draw a Grid](05-grid)
 - [Grid Neighbors](06-neighbors)
+- [Dog OOP Demo](07-dog-oop)
+- [Walker OOP Demo](08-walker-oop)
+- [Ball OOP Demo](09-ball-oop)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
