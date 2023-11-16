@@ -10,6 +10,7 @@
 - [Dog OOP Demo](07-dog-oop)
 - [Walker OOP Demo](08-walker-oop)
 - [Ball OOP Demo](09-ball-oop)
+- [Connected Ball OOP Demo](10-nodes)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
