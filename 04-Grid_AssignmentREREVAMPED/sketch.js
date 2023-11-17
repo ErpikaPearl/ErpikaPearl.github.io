@@ -71,7 +71,7 @@ let ChoiceBoxes = [];
 let finalBox = {};
 
 function preload(){
-  paintBrush = loadImage('PaintBursh-HQ.png');
+  paintBrush = loadImage("PaintBursh-HQ.png");
 }
 
 function setup() {
