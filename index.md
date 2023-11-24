@@ -11,6 +11,7 @@
 - [Walker OOP Demo](08-walker-oop)
 - [Ball OOP Demo](09-ball-oop)
 - [Connected Ball OOP Demo](10-nodes)
+- [Inheritence Demo](11-Inheritence)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
