@@ -12,6 +12,7 @@
 - [Ball OOP Demo](09-ball-oop)
 - [Connected Ball OOP Demo](10-nodes)
 - [Inheritence Demo](11-Inheritence)
+- [Collide 2D Demo](12-collide2D)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
@@ -19,3 +20,4 @@
 - [Simple Arrays Project](03-simple-arrays)
 - [Grid Assignment](04-Grid_Assignment)
 - [Grid Assignment Better](04-Grid_AssignmentREVAMPED)
+- [Play assignment](05-play_assignment)
