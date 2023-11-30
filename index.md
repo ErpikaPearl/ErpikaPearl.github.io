@@ -13,6 +13,7 @@
 - [Connected Ball OOP Demo](10-nodes)
 - [Inheritence Demo](11-Inheritence)
 - [Collide 2D Demo](12-collide2D)
+- [p5Play Template](13-p5play)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
