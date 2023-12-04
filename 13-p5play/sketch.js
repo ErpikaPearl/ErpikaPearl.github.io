@@ -5,22 +5,12 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let drone, floor;
+let sprite;
 
 function setup() {
-  new Canvas(100, 500);
-  world.gravity.y = 4;
+  new canvas(238, 100);
 
-  drone = new Sprite(50, 0, 40, 10);
-  
-  floor = new Sprite(50, 498, 100, 6, 's');
-}
-
-function draw() {
-  background(16);
-
-  if (mouse.pressing()) {
-    drone.bearing = -90;
-    drone.applyForce(6);
-  }
+  sprite = new sprite();
+  sprite.width = 50;
+  sprite.height = 50;
 }
