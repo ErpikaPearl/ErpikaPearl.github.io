@@ -14,6 +14,8 @@
 - [Inheritence Demo](11-Inheritence)
 - [Collide 2D Demo](12-collide2D)
 - [p5Play Template](13-p5play)
+- [Recursive Circles](13-circle-recursion)
+- [Sierpinski Triangle](14-Sierpinski)
 
 ## Projects
 - [Interactive Scene](01-burgeria/)
